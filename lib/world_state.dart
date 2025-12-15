@@ -1,5 +1,6 @@
 import 'entity.dart';
 import 'player.dart';
+import 'faction.dart';
 
 class WorldState {
   final List<Entity> entities;
@@ -9,6 +10,7 @@ class WorldState {
   final int largestClusterSize;
   final int groupCount;
   final double averageGroupSize;
+  final Map<String, Faction> zoneControl; // Zone name -> Faction
 
   WorldState({
     required this.entities,
@@ -18,6 +20,7 @@ class WorldState {
     this.largestClusterSize = 0,
     this.groupCount = 0,
     this.averageGroupSize = 0.0,
+    this.zoneControl = const {},
   });
 
   Map<String, dynamic> toJson() {
@@ -29,6 +32,7 @@ class WorldState {
       'largestClusterSize': largestClusterSize,
       'groupCount': groupCount,
       'averageGroupSize': averageGroupSize,
+      'zoneControl': zoneControl.map((k, v) => MapEntry(k, v.toJson())),
     };
   }
 
@@ -47,6 +51,11 @@ class WorldState {
       largestClusterSize: json['largestClusterSize'] as int? ?? 0,
       groupCount: json['groupCount'] as int? ?? 0,
       averageGroupSize: (json['averageGroupSize'] as num?)?.toDouble() ?? 0.0,
+      zoneControl:
+          (json['zoneControl'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(k, Faction.fromJson(v as String)),
+          ) ??
+          {},
     );
   }
 }
