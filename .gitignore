@@ -2,6 +2,21 @@
 # Created by `dart pub`
 .dart_tool/
 
-# Avoid committing pubspec.lock for library packages; see
-# https://dart.dev/guides/libraries/private-files#pubspeclock.
+# Standard Dart/Flutter/IDE ignores
+.idea/
+.vscode/
+build/
+coverage/
+generated/
+
+# Logs and temps
+*.log
+*.tmp
+*.cache
+/logs/
+/out/
+/dist/
+.DS_Store
+
+# Library packages should not commit pubspec.lock
 pubspec.lock
