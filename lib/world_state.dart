@@ -11,6 +11,8 @@ class WorldState {
   final int groupCount;
   final double averageGroupSize;
   final Map<String, Faction> zoneControl; // Zone name -> Faction
+  final Map<String, Map<Faction, double>>
+  zoneInfluence; // Zone -> Faction -> Score
 
   WorldState({
     required this.entities,
@@ -21,6 +23,7 @@ class WorldState {
     this.groupCount = 0,
     this.averageGroupSize = 0.0,
     this.zoneControl = const {},
+    this.zoneInfluence = const {},
   });
 
   Map<String, dynamic> toJson() {
@@ -33,6 +36,9 @@ class WorldState {
       'groupCount': groupCount,
       'averageGroupSize': averageGroupSize,
       'zoneControl': zoneControl.map((k, v) => MapEntry(k, v.toJson())),
+      'zoneInfluence': zoneInfluence.map(
+        (k, v) => MapEntry(k, v.map((fk, fv) => MapEntry(fk.name, fv))),
+      ),
     };
   }
 
@@ -54,6 +60,17 @@ class WorldState {
       zoneControl:
           (json['zoneControl'] as Map<String, dynamic>?)?.map(
             (k, v) => MapEntry(k, Faction.fromJson(v as String)),
+          ) ??
+          {},
+      zoneInfluence:
+          (json['zoneInfluence'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(
+              k,
+              (v as Map<String, dynamic>).map(
+                (fk, fv) =>
+                    MapEntry(Faction.fromJson(fk), (fv as num).toDouble()),
+              ),
+            ),
           ) ??
           {},
     );
