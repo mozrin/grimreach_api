@@ -1,5 +1,6 @@
 import 'zone.dart';
 import 'entity_type.dart';
+import 'faction.dart';
 
 class Entity {
   final String id;
@@ -7,13 +8,15 @@ class Entity {
   final double y;
   final Zone zone;
   final EntityType type;
+  final Faction faction;
 
   Entity({
     required this.id,
     required this.x,
     required this.y,
-    this.zone = Zone.safe,
-    this.type = EntityType.npc,
+    required this.zone,
+    required this.type,
+    this.faction = Faction.neutral,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,6 +26,7 @@ class Entity {
       'y': y,
       'zone': zone.toJson(),
       'type': type.toJson(),
+      'faction': faction.toJson(),
     };
   }
 
@@ -31,12 +35,9 @@ class Entity {
       id: json['id'] as String,
       x: (json['x'] as num).toDouble(),
       y: (json['y'] as num).toDouble(),
-      zone: json['zone'] != null
-          ? Zone.fromJson(json['zone'] as String)
-          : Zone.safe,
-      type: json['type'] != null
-          ? EntityType.fromJson(json['type'] as String)
-          : EntityType.npc,
+      zone: Zone.fromJson(json['zone'] as String),
+      type: EntityType.fromJson(json['type'] as String),
+      faction: Faction.fromJson(json['faction'] as String? ?? 'neutral'),
     );
   }
 }
