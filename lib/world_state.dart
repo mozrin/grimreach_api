@@ -17,6 +17,8 @@ class WorldState {
   final Map<Faction, double> factionMorale; // Faction -> Morale Score
   final Map<Faction, double>
   factionInfluenceModifiers; // Faction -> Gain Multiplier
+  final Map<Faction, double>
+  factionPressure; // Faction -> Pressure Score (Phase 025)
 
   WorldState({
     required this.entities,
@@ -31,6 +33,7 @@ class WorldState {
     this.recentShifts = const {},
     this.factionMorale = const {},
     this.factionInfluenceModifiers = const {},
+    this.factionPressure = const {},
   });
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,7 @@ class WorldState {
       'factionInfluenceModifiers': factionInfluenceModifiers.map(
         (k, v) => MapEntry(k.name, v),
       ),
+      'factionPressure': factionPressure.map((k, v) => MapEntry(k.name, v)),
     };
   }
 
@@ -93,6 +97,11 @@ class WorldState {
           {},
       factionInfluenceModifiers:
           (json['factionInfluenceModifiers'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(Faction.fromJson(k), (v as num).toDouble()),
+          ) ??
+          {},
+      factionPressure:
+          (json['factionPressure'] as Map<String, dynamic>?)?.map(
             (k, v) => MapEntry(Faction.fromJson(k), (v as num).toDouble()),
           ) ??
           {},
