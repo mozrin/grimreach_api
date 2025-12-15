@@ -15,6 +15,8 @@ class WorldState {
   zoneInfluence; // Zone -> Faction -> Score
   final Set<String> recentShifts; // Zones that changed owner this tick
   final Map<Faction, double> factionMorale; // Faction -> Morale Score
+  final Map<Faction, double>
+  factionInfluenceModifiers; // Faction -> Gain Multiplier
 
   WorldState({
     required this.entities,
@@ -28,6 +30,7 @@ class WorldState {
     this.zoneInfluence = const {},
     this.recentShifts = const {},
     this.factionMorale = const {},
+    this.factionInfluenceModifiers = const {},
   });
 
   Map<String, dynamic> toJson() {
@@ -45,6 +48,9 @@ class WorldState {
       ),
       'recentShifts': recentShifts.toList(),
       'factionMorale': factionMorale.map((k, v) => MapEntry(k.name, v)),
+      'factionInfluenceModifiers': factionInfluenceModifiers.map(
+        (k, v) => MapEntry(k.name, v),
+      ),
     };
   }
 
@@ -82,6 +88,11 @@ class WorldState {
       recentShifts: Set<String>.from(json['recentShifts'] ?? []),
       factionMorale:
           (json['factionMorale'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(Faction.fromJson(k), (v as num).toDouble()),
+          ) ??
+          {},
+      factionInfluenceModifiers:
+          (json['factionInfluenceModifiers'] as Map<String, dynamic>?)?.map(
             (k, v) => MapEntry(Faction.fromJson(k), (v as num).toDouble()),
           ) ??
           {},
