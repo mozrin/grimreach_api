@@ -5,11 +5,15 @@ class WorldState {
   final List<Entity> entities;
   final List<Player> players;
   final Map<String, int> playerProximityCounts;
+  final Map<String, int> zoneClusterCounts; // Zone name -> Number of clusters
+  final int largestClusterSize;
 
   WorldState({
     required this.entities,
     required this.players,
     this.playerProximityCounts = const {},
+    this.zoneClusterCounts = const {},
+    this.largestClusterSize = 0,
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +21,8 @@ class WorldState {
       'entities': entities.map((e) => e.toJson()).toList(),
       'players': players.map((p) => p.toJson()).toList(),
       'playerProximityCounts': playerProximityCounts,
+      'zoneClusterCounts': zoneClusterCounts,
+      'largestClusterSize': largestClusterSize,
     };
   }
 
@@ -31,6 +37,8 @@ class WorldState {
       playerProximityCounts: Map<String, int>.from(
         json['playerProximityCounts'] ?? {},
       ),
+      zoneClusterCounts: Map<String, int>.from(json['zoneClusterCounts'] ?? {}),
+      largestClusterSize: json['largestClusterSize'] as int? ?? 0,
     );
   }
 }
