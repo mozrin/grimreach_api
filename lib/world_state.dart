@@ -23,6 +23,7 @@ class WorldState {
   zoneSaturation; // Zone -> Saturation State (Phase 026)
   final Map<String, double>
   migrationPressure; // Zone -> Migration Pressure (Phase 027)
+  final String globalEnvironment; // (Phase 028)
 
   WorldState({
     required this.entities,
@@ -40,6 +41,7 @@ class WorldState {
     this.factionPressure = const {},
     this.zoneSaturation = const {},
     this.migrationPressure = const {},
+    this.globalEnvironment = 'calm',
   });
 
   Map<String, dynamic> toJson() {
@@ -63,6 +65,7 @@ class WorldState {
       'factionPressure': factionPressure.map((k, v) => MapEntry(k.name, v)),
       'zoneSaturation': zoneSaturation,
       'migrationPressure': migrationPressure,
+      'globalEnvironment': globalEnvironment,
     };
   }
 
@@ -119,6 +122,7 @@ class WorldState {
             (k, v) => MapEntry(k, (v as num).toDouble()),
           ) ??
           {},
+      globalEnvironment: json['globalEnvironment'] as String? ?? 'calm',
     );
   }
 }
