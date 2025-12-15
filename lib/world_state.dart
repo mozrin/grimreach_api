@@ -13,6 +13,7 @@ class WorldState {
   final Map<String, Faction> zoneControl; // Zone name -> Faction
   final Map<String, Map<Faction, double>>
   zoneInfluence; // Zone -> Faction -> Score
+  final Set<String> recentShifts; // Zones that changed owner this tick
 
   WorldState({
     required this.entities,
@@ -24,6 +25,7 @@ class WorldState {
     this.averageGroupSize = 0.0,
     this.zoneControl = const {},
     this.zoneInfluence = const {},
+    this.recentShifts = const {},
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class WorldState {
       'zoneInfluence': zoneInfluence.map(
         (k, v) => MapEntry(k, v.map((fk, fv) => MapEntry(fk.name, fv))),
       ),
+      'recentShifts': recentShifts.toList(),
     };
   }
 
@@ -73,6 +76,7 @@ class WorldState {
             ),
           ) ??
           {},
+      recentShifts: Set<String>.from(json['recentShifts'] ?? []),
     );
   }
 }
