@@ -1,6 +1,7 @@
 import 'entity.dart';
 import 'player.dart';
 import 'faction.dart';
+import 'season.dart';
 
 class WorldState {
   final List<Entity> entities;
@@ -25,6 +26,8 @@ class WorldState {
   migrationPressure; // Zone -> Migration Pressure (Phase 027)
   final String globalEnvironment; // (Phase 028)
   final Map<String, String> zoneHazards; // Zone -> Hazard (Phase 029)
+  final Season currentSeason; // (Phase 030)
+  final List<String> seasonalModifiers; // (Phase 030)
 
   WorldState({
     required this.entities,
@@ -44,6 +47,8 @@ class WorldState {
     this.migrationPressure = const {},
     this.globalEnvironment = 'calm',
     this.zoneHazards = const {},
+    this.currentSeason = Season.spring,
+    this.seasonalModifiers = const [],
   });
 
   Map<String, dynamic> toJson() {
@@ -69,6 +74,8 @@ class WorldState {
       'migrationPressure': migrationPressure,
       'globalEnvironment': globalEnvironment,
       'zoneHazards': zoneHazards,
+      'currentSeason': currentSeason.toJson(),
+      'seasonalModifiers': seasonalModifiers,
     };
   }
 
@@ -127,6 +134,10 @@ class WorldState {
           {},
       globalEnvironment: json['globalEnvironment'] as String? ?? 'calm',
       zoneHazards: Map<String, String>.from(json['zoneHazards'] ?? {}),
+      currentSeason: Season.fromJson(
+        json['currentSeason'] as String? ?? 'spring',
+      ),
+      seasonalModifiers: List<String>.from(json['seasonalModifiers'] ?? []),
     );
   }
 }
