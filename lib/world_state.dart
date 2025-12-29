@@ -3,6 +3,7 @@ import 'player.dart';
 import 'faction.dart';
 import 'season.dart';
 import 'lunar_phase.dart';
+import 'constellation.dart';
 
 class WorldState {
   final List<Entity> entities;
@@ -31,6 +32,8 @@ class WorldState {
   final List<String> seasonalModifiers; // (Phase 030)
   final LunarPhase currentLunarPhase; // (Phase 031)
   final List<String> lunarModifiers; // (Phase 031)
+  final Constellation currentConstellation; // (Phase 032)
+  final List<String> constellationModifiers; // (Phase 032)
 
   WorldState({
     required this.entities,
@@ -54,6 +57,8 @@ class WorldState {
     this.seasonalModifiers = const [],
     this.currentLunarPhase = LunarPhase.newMoon,
     this.lunarModifiers = const [],
+    this.currentConstellation = Constellation.wanderer,
+    this.constellationModifiers = const [],
   });
 
   Map<String, dynamic> toJson() {
@@ -83,6 +88,8 @@ class WorldState {
       'seasonalModifiers': seasonalModifiers,
       'currentLunarPhase': currentLunarPhase.toJson(),
       'lunarModifiers': lunarModifiers,
+      'currentConstellation': currentConstellation.toJson(),
+      'constellationModifiers': constellationModifiers,
     };
   }
 
@@ -149,6 +156,12 @@ class WorldState {
         json['currentLunarPhase'] as String? ?? 'newMoon',
       ),
       lunarModifiers: List<String>.from(json['lunarModifiers'] ?? []),
+      currentConstellation: Constellation.fromJson(
+        json['currentConstellation'] as String? ?? 'wanderer',
+      ),
+      constellationModifiers: List<String>.from(
+        json['constellationModifiers'] ?? [],
+      ),
     );
   }
 }
